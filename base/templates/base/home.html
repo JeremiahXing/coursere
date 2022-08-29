@@ -1,0 +1,39 @@
+{% extends 'base/main.html' %}
+
+{% block content %}
+<center>
+	<h2>Coursere | Certificates, Free Online Courses, & Tech Communities</h2>
+</center>
+<hr>
+<div class="container-lg">
+	<div class="row">
+		<div class="col-10">
+			<div class="row">
+				{% for topic in topics %}
+				<div class="col-md-4 list-group-item list-group-item-light">
+					<div class="thumbnail">
+						<center>
+							<a href="{% url 'course' %}?t={{topic.name}}">
+									<img src="{{topic.header_image.url}}" class="img-responsive img-rounded">
+							</a>
+						</center>
+							<div class="caption">
+									<h4 align="center">{{topic.name}}</h4>
+									<p>
+										<small>{{topic.description}}</small>
+									</p>
+							</div> 
+					</div>
+				</div>
+				{% endfor %}
+			</div>
+		</div>
+		<div class="vr"></div>
+		<div class="col-2">
+
+		</div>
+	</div>
+</div>
+
+
+{% endblock %}

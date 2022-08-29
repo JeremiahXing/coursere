@@ -1,0 +1,113 @@
+{% extends 'base\main.html' %}
+
+{% block content %}
+
+<h3>
+	<div class="text-center container-fluid " style="margin: 1000;">
+		<i class="bi bi-tsunami">
+			{{room.name}}
+		</i>
+	</div>
+</h3>
+<hr>
+<center>
+	<p>{{room.description}}</p>
+</center>
+<div class="row container-fluid">
+	<div class="col-9">
+		<div class="comment-wrapper">
+			<div class="panel panel-primary">
+				<div class="panel-heading">
+					<h3>Chat room</h3>
+				</div>
+				<div class="panel-body scrollable-panel" id ="view">
+					<ul class="list-group">
+						{% for message in messages %}
+							{% if message.user == request.user %}
+							<li class="list-group-item list-group-item-primary">
+								<div align="right">
+									<a class="dropdown-toggle text-success" id="messageDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"></a>
+									<ul class="dropdown-menu" aria-labelledby="messageDropdown">
+											<li><a href="{% url 'delete-message' message.id %}" class="dropdown-item">Delete</a></li>
+									</ul>
+									<small>@<a href="{% url 'user-profile' message.user.id %}" class="text-success">{{message.user}}</a> | {{message.created|timesince}} age</small>
+									<p>{{message.body}}</p>
+								</div>
+							</li>
+							{% else %}
+							<li class="list-group-item list-group-item-light">
+								<div>
+									<small>@<a href="{% url 'user-profile' message.user.id %}">{{message.user}}</a> | {{message.created|timesince}} age</small>
+									<p>{{message.body}}</p>
+								</div>
+							</li>
+							{% endif %}
+						{% endfor %}
+					</ul>
+				</div>
+			</div>
+			<hr>
+			{% if request.user.is_authenticated %}
+			<div class="comment-form">
+				<form action="" method="POST" id="form">
+					{% csrf_token %}
+					
+					<div class="row">
+						<div class="col-11">
+							<input class="form-control" type="text" name="body" id="content" placeholder="Write your message here...">
+							<span id="re"></span>
+						</div>
+						<div class="col-1">
+							<input type="submit" class="btn btn-primary" value="send">
+						</div>
+					</div>
+				</form>
+			</div>
+			{% endif %}
+		</div>
+	</div>
+	<div class="col-3">
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+					<h3 class="panel-title">Members:</h3>
+			</div>
+			<div class="panel-body scrollable-panel">
+				<ul class="list-group">
+					<li class="list-group-item list-group-item-warning">hosted by @<a href="{% url 'user-profile' room.host.id %}" class="badge badge-secondary text-info">{{room.host}}</a></li>
+					{% for participant in participants %}
+					<li class="list-group-item list-group-item-success">
+						@<a href="{% url 'user-profile' participant.id %}">{{participant.username}}</a>
+					</li>
+					{% endfor %}
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	function send(){
+		var showview=document.getElementById('view');
+		var fm = document.getElementById('form');//不要通过TagName获取表单
+	var fd = new FormData(fm);
+	var xhr = new XMLHttpRequest();
+	xhr.onreadystatechange = function (){
+		if(xhr.readyState==4){
+				 //alert(xhr.responseText);
+				document.getElementById('re').innerHTML=xhr.responseText;
+				document.getElementById('content').value="";
+				setTimeout(function(){hidden()},2000)
+						}
+		}
+	xhr.open('post', window.location.href);
+	xhr.send(fd);
+	showview.scrollTop=showview.scrollHeight;
+}
+	function hidden(){
+		document.getElementById('re').innerHTML="";
+	}
+	function stop(){
+		showview.scrollTop=showview.scrollHeight;
+	}
+</script>
+{% endblock %}

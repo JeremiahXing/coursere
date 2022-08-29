@@ -1,0 +1,17 @@
+<div class="panel panel-primary">
+	<div class="panel-heading">
+		<h3 class="panel-title">Topics:</h3>
+		<a href="{{request.path}}" class="badge badge-secondary" >All topics</a>
+	</div>
+	<div class="panel-body scrollable-panel">
+		<div class="overflow-auto">
+			<div class="list-group-flush">
+				{% for topic in topics %}
+				<a href="{{request.path}}?t={{topic.name}}" class="list-group-item list-group-item-dark">
+					{{topic.name}} <span class="badge badge-danger text-danger">{{topic.topic2room__count}}</span>
+				</a>
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,18 @@
+
+<small>
+	{% if message.user == request.user %}
+	<a class="dropdown-toggle text-success" id="messageDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"></a>
+	<ul class="dropdown-menu" aria-labelledby="messageDropdown">
+			<li><a href="{% url 'delete-message' message.id %}" class="dropdown-item">Delete</a></li>
+	</ul>
+	@<a href="{% url 'user-profile' message.user.id %}" class="alert-link text-success" >{{message.user}}</a> {{message.created}}  replied to
+	{% else %}
+	@<a href="{% url 'user-profile' message.user.id %}" class="alert-link" >{{message.user}}</a> {{message.created}}  replied to
+	{% endif %}
+</small>
+<br>
+<small>
+	#<a href="{%url 'room' message.room.id%}" class="alert-link" >{{message.room}}</a>
+</small>
+<br>
+<small><p>{{message}}</p></small>

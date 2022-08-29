@@ -1,0 +1,76 @@
+{% extends 'base/main.html' %}
+
+
+{%block content%}
+
+
+
+
+<div class="container-lg">
+    <div>
+        <h2>
+            Welcome, {{user.first_name}}!
+        </h2>
+        {% if profile.avatar %}
+        <img src="{{profile.avatar.url}}" class="rounded"  width="50" height="50">
+        {% else %}
+        {% load static %}
+        <img src="{% static 'images/df_av.jfif' %}" class="rounded"  width="50" height="50">
+        {% endif %}
+        <p>bio: {{profile.bio}}</p>
+        <a href="{% url 'profile-edit' request.user.id %}" class="text-light">update</a>
+        <br>
+        <p>Courses you're hosting</p>
+        <a href="{% url 'create-room' user.id %}" class="badge badge-secondary">create course</a>
+        <br>
+        <ul class="list-group">
+            {% for hroom in hrooms%}
+                <li class="list-group-item list-group-item-success">
+                    <h4>
+                        <div class="row">
+                            <div class="col-10">
+                                <a href="{% url 'room' hroom.id %}" class="text-success">
+                                    {{hroom.name}}
+                                </a>
+                            </div>
+                            <div class="col">
+                                <center>
+                                    <a href="{% url 'update-room' user.id hroom.id %}" class="btn btn-primary btn-sm">Edit</a>
+                                    <a href="{% url 'delete-room' hroom.id %}" class="btn btn-danger btn-sm">Delete</a> 
+                                </center>
+                            </div>
+                        </div>
+                    </h4>
+                </li>
+                {% endfor %}
+            </ul>
+            <hr>
+            
+            <p>Courses you joined</p>
+            <br>
+            <a href="{%url 'course'%}" class="badge badge-secondary">find course</a>
+            <br>
+            <ul class="list-group">
+                {% for room in rooms%}
+                <li class="list-group-item">
+                    <h4>
+                        <div class="row">
+                            <div class="col-11">
+                                <a href="{% url 'room' room.id %}" class="text-primary">{{room.name}}</a>
+                            </div>
+                            <div class="col">
+                                <center>
+                                    <a href="{% url 'leave-room' user.id room.id %}" class="btn btn-warning btn-sm">Leave</a>
+                                </center>
+                            </div>
+                        </div>
+                    </h4>
+                </li>
+            {% endfor %}
+        </ul>
+        <hr>
+    </div>
+    
+</div>
+
+{%endblock%}

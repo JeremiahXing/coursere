@@ -1,0 +1,16 @@
+<h3>Courses:</h3>
+<small class="text-light">{{rooms|length}} courses available</small>
+<hr>
+<br>
+
+<ul class="list-group">
+
+  {% for room in rooms %}
+	<li class="list-group-item list-group-item-primary">
+		#<a href="{% url 'room' room.id %}" class="alert-link" >{{room.name}}</a>
+		<br>
+		<span class="badge badge-danger text-dark">@<a href="{% url 'user-profile' room.host.id %}" class="text-dark">{{room.host.username}}</a></span>
+	</li>
+	{% endfor %}
+</ul>
+

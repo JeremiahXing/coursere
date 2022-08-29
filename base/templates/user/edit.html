@@ -1,0 +1,15 @@
+{% extends 'base/main.html' %}
+
+{% block content %}
+
+<form method="POST">
+	{% csrf_token %}
+	<center>
+		<div class="containor-lg">
+      {{form.as_p}}
+			<button type="submit" class="btn btn-primary" id="btn">update</button>
+		</div>
+	</center>
+</form>
+
+{% endblock %}
